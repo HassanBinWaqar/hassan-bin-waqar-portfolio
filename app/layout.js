@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "./components/footer";
 import ScrollToTop from "./components/helper/scroll-to-top";
+import ChatBot from "./components/helper/chat-bot";
 import Navbar from "./components/navbar";
 import "./css/card.scss";
 import "./css/globals.scss";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
           <ScrollToTop />
+          <ChatBot />
         </main>
         <Footer />
       </body>

@@ -16,6 +16,7 @@ This README has been updated to match the current project state and the personal
   - Skills cleaned (removed unwanted items) and mapped icons including a new `software-architecture` icon
   - Resume placed at `public/resume.pdf` and configured for download
   - Favicons generated from `public/profile.jpeg` and wired into metadata
+  - Animated AI Chatbot powered by Gemini; floating assistant widget available on all pages
 
 ---
 
@@ -85,6 +86,23 @@ If you deploy elsewhere, ensure the build command is `npm run build` and the pub
 
 - Contact form uses the server endpoint at `app/api/contact/route.js` and sends messages via email (Nodemailer/Gmail SMTP).
 - To enable sending you'll need to set `EMAIL_ADDRESS` (the recipient) and `GMAIL_PASSKEY` (a Gmail App Password) in a local `.env.local` file. See `.env.example` for the expected variables.
+
+---
+
+## AI Chatbot (Gemini)
+
+- The floating assistant uses the Gemini API via `@google/generative-ai` and the API route at `app/api/chat/route.js`.
+- To enable it locally or on Vercel, set `GEMINI_API_KEY` in `.env.local` (local) or Project Environment Variables (Vercel).
+- The assistant is themed to match the site and appears on all pages via `app/layout.js`.
+
+Example `.env.local` entries:
+
+```
+GEMINI_API_KEY=your_api_key_here
+EMAIL_ADDRESS=you@example.com
+GMAIL_PASSKEY=your_gmail_app_password
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
 ---
 
