@@ -33,8 +33,13 @@ export default function ChatBot() {
         body: JSON.stringify({ messages: next }),
       });
       const data = await res.json();
-      if (data?.reply) {
+      if (res.ok && data?.reply) {
         setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
+      } else if (data?.error) {
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: `Error: ${data.error}. Check API key or try again later.` },
+        ]);
       } else {
         setMessages((m) => [
           ...m,
