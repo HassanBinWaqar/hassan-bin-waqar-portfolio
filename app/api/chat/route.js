@@ -32,7 +32,34 @@ export async function POST(req) {
     }
 
     const genAI = getClient();
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+    // Try a short list of candidate models that are commonly available for
+    // generateContent. The SDK doesn't expose a listModels() helper reliably
+    // here, so we attempt each known name until one works.
+    const candidates = [
+      'models/gemini-2.5-flash',
+      'models/gemini-2.5-pro',
+      'models/gemini-flash-latest',
+      'models/text-bison-001',
+      'models/chat-bison-001'
+    ];
+    let model;
+    let lastError = null;
+    for (const name of candidates) {
+      try {
+        model = genAI.getGenerativeModel({ model: name });
+        // quick test call will happen below; break here so we use this model
+        console.info('Selected model candidate:', name);
+        break;
+      } catch (e) {
+        console.warn('Unable to getGenerativeModel for', name, e?.message || e);
+        lastError = e;
+        model = null;
+      }
+    }
+    if (!model) {
+      throw new Error('No usable generative model found. Last error: ' + (lastError?.message || String(lastError)));
+    }
 
     // Build a single prompt from history; keep it short to control token usage
     const historyText = messages
@@ -41,7 +68,45 @@ export async function POST(req) {
 
     const prompt = `${SYSTEM_PROMPT}\n\nConversation so far:\n${historyText}\n\nAssistant:`;
 
-    const result = await model.generateContent(prompt);
+    // Try to generate with the chosen model. If it fails (404 / unsupported
+    // method), list models and retry with a compatible one.
+    let result;
+    try {
+      result = await model.generateContent(prompt);
+    } catch (genErr) {
+      console.warn('Failed to generate with chosen model, attempting fallback...', genErr?.message || genErr);
+        // Try a small list of candidate server models sequentially. Some SDK
+        // builds or API keys don't expose a `listModels()` helper, so instead we
+        // attempt a few known server-side model names and pick the first that
+        // successfully generates content. This avoids calling `listModels()` which
+        // may not exist in the installed SDK and caused the UI error you saw.
+        const candidateModels = [
+          'models/gemini-1.5-flash',
+          'models/gemini-1.5',
+          'models/chat-bison-001',
+          'models/text-bison-001'
+        ];
+
+        let fallbackModel;
+        let lastErr = null;
+        for (const name of candidateModels) {
+          try {
+            fallbackModel = genAI.getGenerativeModel({ model: name });
+            console.info('Using fallback model:', name);
+            result = await fallbackModel.generateContent(prompt);
+            break; // Exit loop if successful
+          } catch (e) {
+            console.warn('Unable to getGenerativeModel for', name, e?.message || e);
+            lastErr = e;
+            fallbackModel = null;
+          }
+        }
+        if (!fallbackModel) {
+          console.error('No model found that supports generateContent');
+          return NextResponse.json({ error: 'No available model supports generateContent. Check API key or model availability.' }, { status: 502 });
+        }
+    }
+
     const text = result && result.response ? result.response.text() : '';
     if (!text) {
       return NextResponse.json({ error: 'Empty response from model' }, { status: 502 });
