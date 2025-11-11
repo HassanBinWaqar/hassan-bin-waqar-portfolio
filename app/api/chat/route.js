@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Ensure Node.js runtime (SDK may not work in Edge runtime)
+export const runtime = 'nodejs';
+
 // Simple guard to ensure key exists
 function getClient() {
   const key = process.env.GEMINI_API_KEY;
@@ -39,11 +42,15 @@ export async function POST(req) {
     const prompt = `${SYSTEM_PROMPT}\n\nConversation so far:\n${historyText}\n\nAssistant:`;
 
     const result = await model.generateContent(prompt);
-    const text = result?.response?.text?.() || 'Sorry, I could not generate a response.';
+    const text = result && result.response ? result.response.text() : '';
+    if (!text) {
+      return NextResponse.json({ error: 'Empty response from model' }, { status: 502 });
+    }
 
     return NextResponse.json({ reply: text });
   } catch (err) {
     console.error('Chat API error:', err);
-    return NextResponse.json({ error: 'Chat failed' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Chat failed';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
