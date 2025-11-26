@@ -65,15 +65,32 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating animated chatbot button */}
       <button
         aria-label="Open chat bot"
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-6 right-6 z-50 rounded-full shadow-lg"
-        style={{ background: accent }}
+        className="fixed bottom-6 right-6 z-50 group"
       >
-        <div className="w-16 h-16 p-1">
-          <AnimationLottie animationPath={botAnim} />
+        <div className="relative">
+          {/* Animated pulsing ring */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 opacity-75 animate-ping"></div>
+          
+          {/* Main button with gradient background */}
+          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 shadow-xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl">
+            {/* Inner robot face */}
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+              {/* Eyes */}
+              <div className="flex gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse"></div>
+                <div className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              </div>
+            </div>
+            
+            {/* Speech bubble indicator */}
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg animate-bounce">
+              💬
+            </div>
+          </div>
         </div>
       </button>
 
@@ -132,7 +149,7 @@ export default function ChatBot() {
                 {loading ? '...' : 'Send'}
               </button>
             </div>
-            <p className="mt-2 text-[10px] text-gray-400">Powered by Gemini · Be concise, no personal data.</p>
+            <p className="mt-2 text-[10px] text-gray-400">Powered by Groq AI · Be concise, no personal data.</p>
           </div>
         </div>
       )}
