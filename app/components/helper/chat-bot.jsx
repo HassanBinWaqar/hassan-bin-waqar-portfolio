@@ -87,11 +87,11 @@ export default function ChatBot() {
             }
           }
         }}
-        className="fixed bottom-6 right-6 z-50 group focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        className="fixed bottom-6 right-6 z-50 group"
       >
         <div className="relative">
           {/* Animated pulsing ring */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 opacity-75 animate-ping motion-reduce:animate-none"></div>
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 opacity-75 animate-ping"></div>
           
           {/* Main button with gradient background */}
           <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-blue-600 shadow-xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl">
@@ -105,7 +105,7 @@ export default function ChatBot() {
             </div>
             
             {/* Speech bubble indicator */}
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg animate-bounce motion-reduce:animate-none">
+            <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg animate-bounce">
               💬
             </div>
           </div>

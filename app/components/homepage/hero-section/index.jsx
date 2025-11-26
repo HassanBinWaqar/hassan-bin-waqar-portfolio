@@ -16,11 +16,9 @@ function HeroSection() {
     <section className="relative flex flex-col items-center justify-between py-4 lg:py-12">
       <Image
         src="/hero.svg"
-        alt=""
+        alt="Hero"
         width={1572}
         height={795}
-        priority
-        quality={75}
         className="absolute -top-[98px] -z-10"
       />
 
@@ -39,7 +37,6 @@ function HeroSection() {
             <Link
               href={personalData.github}
               target='_blank'
-              aria-label="Visit GitHub profile"
               onClick={() => trackSocialClick('GitHub', personalData.github)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
@@ -48,7 +45,6 @@ function HeroSection() {
             <Link
               href={personalData.linkedIn}
               target='_blank'
-              aria-label="Visit LinkedIn profile"
               onClick={() => trackSocialClick('LinkedIn', personalData.linkedIn)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
@@ -57,7 +53,6 @@ function HeroSection() {
             <Link
               href={personalData.facebook}
               target='_blank'
-              aria-label="Visit Facebook profile"
               onClick={() => trackSocialClick('Facebook', personalData.facebook)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
@@ -66,7 +61,6 @@ function HeroSection() {
             <Link
               href={personalData.leetcode}
               target='_blank'
-              aria-label="Visit LeetCode profile"
               onClick={() => trackSocialClick('LeetCode', personalData.leetcode)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
@@ -75,7 +69,6 @@ function HeroSection() {
             <Link
               href={personalData.twitter}
               target='_blank'
-              aria-label="Visit Twitter profile"
               onClick={() => trackSocialClick('Twitter', personalData.twitter)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >

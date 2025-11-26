@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { TbMailForward } from "react-icons/tb";
 import { toast } from "react-toastify";
+import { trackContactFormStart, trackContactFormSubmit } from "@/utils/analytics";
 
 function ContactForm() {
   const [error, setError] = useState({ email: false, required: false });
@@ -41,13 +42,16 @@ function ContactForm() {
       );
 
       toast.success("Message sent successfully!");
+      trackContactFormSubmit(true);
       setUserInput({
         name: "",
         email: "",
         message: "",
       });
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      const errorMessage = error?.response?.data?.message || error.message;
+      toast.error(errorMessage);
+      trackContactFormSubmit(false, errorMessage);
     } finally {
       setIsLoading(false);
     };
@@ -67,6 +71,7 @@ function ContactForm() {
               maxLength="100"
               required={true}
               onChange={(e) => setUserInput({ ...userInput, name: e.target.value })}
+              onFocus={() => !userInput.name && trackContactFormStart()}
               onBlur={checkRequired}
               value={userInput.name}
             />
