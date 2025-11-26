@@ -1,3 +1,4 @@
+"use client";
 // @flow strict
 
 import { personalData } from "@/utils/data/personal-data";
@@ -8,15 +9,18 @@ import { FaFacebook, FaTwitterSquare } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
 import { RiContactsFill } from "react-icons/ri";
 import { SiLeetcode } from "react-icons/si";
+import { trackResumeDownload, trackSocialClick } from "@/utils/analytics";
 
 function HeroSection() {
   return (
     <section className="relative flex flex-col items-center justify-between py-4 lg:py-12">
       <Image
         src="/hero.svg"
-        alt="Hero"
+        alt=""
         width={1572}
         height={795}
+        priority
+        quality={75}
         className="absolute -top-[98px] -z-10"
       />
 
@@ -35,6 +39,8 @@ function HeroSection() {
             <Link
               href={personalData.github}
               target='_blank'
+              aria-label="Visit GitHub profile"
+              onClick={() => trackSocialClick('GitHub', personalData.github)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
               <BsGithub size={30} />
@@ -42,6 +48,8 @@ function HeroSection() {
             <Link
               href={personalData.linkedIn}
               target='_blank'
+              aria-label="Visit LinkedIn profile"
+              onClick={() => trackSocialClick('LinkedIn', personalData.linkedIn)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
               <BsLinkedin size={30} />
@@ -49,6 +57,8 @@ function HeroSection() {
             <Link
               href={personalData.facebook}
               target='_blank'
+              aria-label="Visit Facebook profile"
+              onClick={() => trackSocialClick('Facebook', personalData.facebook)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
               <FaFacebook size={30} />
@@ -56,6 +66,8 @@ function HeroSection() {
             <Link
               href={personalData.leetcode}
               target='_blank'
+              aria-label="Visit LeetCode profile"
+              onClick={() => trackSocialClick('LeetCode', personalData.leetcode)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
               <SiLeetcode size={30} />
@@ -63,6 +75,8 @@ function HeroSection() {
             <Link
               href={personalData.twitter}
               target='_blank'
+              aria-label="Visit Twitter profile"
+              onClick={() => trackSocialClick('Twitter', personalData.twitter)}
               className="transition-all text-pink-500 hover:scale-125 duration-300"
             >
               <FaTwitterSquare size={30} />
@@ -101,6 +115,7 @@ function HeroSection() {
                     download={isLocal}
                     target={isLocal ? undefined : '_blank'}
                     rel={isLocal ? undefined : 'noreferrer'}
+                    onClick={() => trackResumeDownload('pdf')}
                     className="flex items-center gap-1 hover:gap-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 px-3 md:px-8 py-3 md:py-4 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-white no-underline transition-all duration-200 ease-out hover:text-white hover:no-underline md:font-semibold"
                     role="button"
                   >

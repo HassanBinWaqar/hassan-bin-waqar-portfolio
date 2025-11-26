@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin or private routes (if any)
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://hassanbinwaqar.codes/sitemap.xml
